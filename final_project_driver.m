@@ -48,6 +48,7 @@ imshow(c_hat, map);
 title('Log Magnitude of 2-D DCT');
 %}
 
+%{
 % Part 2
 
 % 2.3 Generate and plot 1-D Feature Vectors
@@ -99,3 +100,7 @@ feature_vector = findfeatures(path_to_image_2, 100);
 figure; % Open yet another new figure window
 plot(feature_vector);
 title('1-D Feature Vector, Image: S15.9, Dimension: 100');
+%}
+
+%Part 3
+[trdata_raw, trclass] = face_recog_knn_train([1 40], 70);
