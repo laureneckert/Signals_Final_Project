@@ -48,48 +48,54 @@ imshow(c_hat, map);
 title('Log Magnitude of 2-D DCT');
 %}
 
-%Part 2
+% Part 2
 
-%2.3 Generate and plot 1-D Feature Vectors
+% 2.3 Generate and plot 1-D Feature Vectors
 
-%Image choice 1: S3.2
+% Image choice 1: S3.2
 path_to_image_1 = "C:\Users\laure\Dropbox\School\BSE\Coursework\23 Fall\SignalsAndSystems\Labs\final project\Signals_Final_Project\att_faces\s3\2.pgm";
 
-%generate for dimension 9
+% generate for dimension 9
 feature_vector = findfeatures(path_to_image_1, 9);
-%plot for dimension 9
+% plot for dimension 9
+figure; % Open a new figure window
 plot(feature_vector);
 title('1-D Feature Vector, Image: S3.2, Dimension: 9');
 
-%generate for dimension 35
+% generate for dimension 35
 feature_vector = findfeatures(path_to_image_1, 35);
-%plot for dimension 35
+% plot for dimension 35
+figure; % Open another new figure window
 plot(feature_vector);
-title('1-D Feature Vector,Image: S3.2, Dimension: 35');
+title('1-D Feature Vector, Image: S3.2, Dimension: 35');
 
-%generate for dimension 100
+% generate for dimension 100
 feature_vector = findfeatures(path_to_image_1, 100);
-%plot for dimension 100
+% plot for dimension 100
+figure; % Open yet another new figure window
 plot(feature_vector);
-title('1-D Feature Vector,Image: S3.2, Dimension: 100');
+title('1-D Feature Vector, Image: S3.2, Dimension: 100');
 
-%Image choice 1: S15.9
+% Image choice 2: S15.9
 path_to_image_2 = "C:\Users\laure\Dropbox\School\BSE\Coursework\23 Fall\SignalsAndSystems\Labs\final project\Signals_Final_Project\att_faces\s15\9.pgm";
 
-%generate for dimension 9
+% generate for dimension 9
 feature_vector = findfeatures(path_to_image_2, 9);
-%plot for dimension 9
+% plot for dimension 9
+figure; % Open a new figure window
 plot(feature_vector);
 title('1-D Feature Vector, Image: S15.9, Dimension: 9');
 
-%generate for dimension 35
+% generate for dimension 35
 feature_vector = findfeatures(path_to_image_2, 35);
-%plot for dimension 35
+% plot for dimension 35
+figure; % Open another new figure window
 plot(feature_vector);
-title('1-D Feature Vector,Image: S15.9, Dimension: 35');
+title('1-D Feature Vector, Image: S15.9, Dimension: 35');
 
-%generate for dimension 100
+% generate for dimension 100
 feature_vector = findfeatures(path_to_image_2, 100);
-%plot for dimension 100
+% plot for dimension 100
+figure; % Open yet another new figure window
 plot(feature_vector);
-title('1-D Feature Vector,Image: S15.9, Dimension: 100');
+title('1-D Feature Vector, Image: S15.9, Dimension: 100');

@@ -87,7 +87,7 @@ while cont < dimx * dimy
         end
     end
 end
-zigzag(dimx,dimy)=dimprod;
+zigzag(dimx, dimy) = dimx * dimy;
 
 % Compute 2-D DCT of the image
 t = dct2(ingresso);
