@@ -21,12 +21,73 @@ cont = 2;
 
 % Perform zig-zag scanning across the image matrix
 while cont < dimx * dimy
-    % Various if conditions to navigate through the matrix in zig-zag pattern
-    % ...
-    % (Existing logic for navigating the zig-zag pattern)
-    % ...
+    if slittox == 1 && (ii+1)<=dimx
+        ii = ii+1;
+        jj = jj;
+        zigzag(ii,jj)=cont;
+        cont = cont+1;
+        slittox = 0;
+        last    = 1;
+        continue;
+    end
+    if slittox == 1 && (ii+1)>dimx && (jj+1<=dimy)
+        ii = ii;
+        jj = jj+1;
+        zigzag(ii,jj)=cont;
+        cont = cont+1;
+        slittox = 0;
+        last    = 1;
+        continue;
+    end
+
+    if slittoy == 1 && (jj+1)<=dimy
+        ii = ii;
+        jj = jj+1;
+        zigzag(ii,jj)=cont;
+        cont = cont+1;
+        slittoy = 0;
+        last    = 0;
+        continue;
+    end
+    if slittoy == 1 && (jj+1)>dimy && (ii+1<=dimx)
+        ii = ii+1;
+        jj = jj;
+        zigzag(ii,jj)=cont;
+        cont = cont+1;
+        slittoy = 0;
+        last    = 0;
+        continue;
+    end
+
+    if (slittox == 0 && slittoy == 0) && last == 1
+        if ii-1>=1 && jj+1<=dimy
+            ii=ii-1;
+            jj=jj+1;
+            zigzag(ii,jj)=cont;
+            cont = cont+1;
+            continue;
+        else
+            slittox = 0;
+            slittoy = 1;
+            continue;
+        end
+    end
+
+    if (slittox == 0 && slittoy == 0) && last == 0
+        if ii+1<=dimx && jj-1>=1
+            ii=ii+1;
+            jj=jj-1;
+            zigzag(ii,jj)=cont;
+            cont = cont+1;
+            continue;
+        else
+            slittox = 1;
+            slittoy = 0;
+            continue;
+        end
+    end
 end
-zigzag(dimx, dimy) = dimx * dimy;
+zigzag(dimx,dimy)=dimprod;
 
 % Compute 2-D DCT of the image
 t = dct2(ingresso);
