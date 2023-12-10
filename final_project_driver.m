@@ -106,7 +106,6 @@ title('1-D Feature Vector, Image: S15.9, Dimension: 100');
 [trdata_raw, trclass] = face_recog_knn_train([1 40], 70);
 
 %Part 4
-% Load the training data
 % Load the training data from the MAT file
 loadedData = load('raw_data.mat');
 
@@ -127,7 +126,7 @@ end
 
 % Define the range for k and dimensions
 k_values = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21];
-dimension_values = 25:15:70; % Adjusted to go up to 70
+dimension_values = 25:5:70; % Adjusted to go up to 70
 results = zeros(length(dimension_values), length(k_values)); % Store success rates
 
 % Define the base directory for the images
@@ -138,7 +137,7 @@ for d_idx = 1:length(dimension_values)
     dimension = dimension_values(d_idx);
 
     % Reduce the training data to the current dimension
-    reduced_training_data = trdata_raw(:, 1:dimension);
+    reduced_training_data = trainingData(:, 1:dimension);
 
     % Prepare filenames for test images
     test_filenames = {};
@@ -153,10 +152,10 @@ for d_idx = 1:length(dimension_values)
         k = k_values(k_idx);
         
         % Call the kNN classifier
-        [~, success_rate] = knn_classifier(reduced_training_data, trclass, test_filenames, dimension, k);
+        [~, success_rate] = knn_classifier(reduced_training_data, trainingLabels, test_filenames, k);
         % Log the dimension and success rate
         disp(['Testing dimension: ', num2str(dimension), ', k: ', num2str(k), ', Success rate: ', num2str(success_rate), '%']);
-
+    
         % Store the success rate
         results(d_idx, k_idx) = success_rate;
     end
