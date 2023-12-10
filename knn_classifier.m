@@ -14,7 +14,7 @@ function [predicted_labels, success_rate] = knn_classifier(training_data, traini
         test_features = test_features(:)'; % Transpose if necessary
 
         % Calculate L2 distances to all training data
-        % Here we replicate test_features to match the number of rows in training_data
+        % replicate test_features to match the number of rows in training_data
         distances = sqrt(sum((repmat(test_features, size(training_data, 1), 1) - training_data).^2, 2));
 
         % Find the k closest training samples

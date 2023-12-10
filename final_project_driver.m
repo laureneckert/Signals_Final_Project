@@ -10,7 +10,7 @@ path_to_image = 'C:\Users\laure\Dropbox\School\BSE\Coursework\23 Fall\SignalsAnd
 
 % Displaying a message indicating image loading
 disp('Loading and displaying the original image...');
-[img, map] = imread(path_to_image); % Replace 'path_to_image' with the actual path to your image file.
+[img, map] = imread(path_to_image);
 
 % Display the original image in a separate window with a caption
 figure('Name', 'Original Image', 'NumberTitle', 'off');
