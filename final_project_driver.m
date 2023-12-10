@@ -104,3 +104,76 @@ title('1-D Feature Vector, Image: S15.9, Dimension: 100');
 
 %Part 3
 [trdata_raw, trclass] = face_recog_knn_train([1 40], 70);
+
+%Part 4
+% Load the training data
+% Load the training data from the MAT file
+loadedData = load('raw_data.mat');
+
+% Check if the required variables are in the loaded data
+if isfield(loadedData, 'trdata_raw') && isfield(loadedData, 'trclass')
+    % Extract the variables from the structure
+    trainingData = loadedData.trdata_raw;
+    trainingLabels = loadedData.trclass;
+
+    % Display a message confirming successful loading
+    disp('Training data and labels successfully loaded.');
+    disp(['Size of training data: ', mat2str(size(trainingData))]);
+    disp(['Size of training labels: ', mat2str(size(trainingLabels))]);
+else
+    % Display an error message if the variables are not found
+    error('Required variables are not found in the MAT file.');
+end
+
+% Define the range for k and dimensions
+k_values = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21];
+dimension_values = 25:15:70; % Adjusted to go up to 70
+results = zeros(length(dimension_values), length(k_values)); % Store success rates
+
+% Define the base directory for the images
+base_image_dir = 'C:\Users\laure\Dropbox\School\BSE\Coursework\23 Fall\SignalsAndSystems\Labs\final project\Signals_Final_Project\att_faces\';  % Replace with the actual directory path
+
+% Loop over each dimension
+for d_idx = 1:length(dimension_values)
+    dimension = dimension_values(d_idx);
+
+    % Reduce the training data to the current dimension
+    reduced_training_data = trdata_raw(:, 1:dimension);
+
+    % Prepare filenames for test images
+    test_filenames = {};
+    for subject = 1:40
+        for img_num = 6:10
+            test_filenames{end+1} = fullfile(base_image_dir, sprintf('s%d/%d.pgm', subject, img_num));
+        end
+    end
+
+    % Loop over each k value
+    for k_idx = 1:length(k_values)
+        k = k_values(k_idx);
+        
+        % Call the kNN classifier
+        [~, success_rate] = knn_classifier(reduced_training_data, trclass, test_filenames, dimension, k);
+        % Log the dimension and success rate
+        disp(['Testing dimension: ', num2str(dimension), ', k: ', num2str(k), ', Success rate: ', num2str(success_rate), '%']);
+
+        % Store the success rate
+        results(d_idx, k_idx) = success_rate;
+    end
+end
+
+% Generate the 3-D plot
+[X, Y] = meshgrid(k_values, dimension_values);
+Z = results;
+surf(X, Y, Z);
+xlabel('k value');
+ylabel('Dimension of feature vector');
+zlabel('Identification Success Rate (%)');
+title('kNN Classifier Performance');
+
+% Analyze the best values for k and the dimension
+[max_success_rate, idx] = max(Z(:));
+[best_dimension_idx, best_k_idx] = ind2sub(size(Z), idx);
+best_dimension = dimension_values(best_dimension_idx);
+best_k = k_values(best_k_idx);
+fprintf('Best dimension: %d, Best k: %d, Success Rate: %.2f%%\n', best_dimension, best_k, max_success_rate);

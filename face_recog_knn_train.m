@@ -18,51 +18,56 @@
 %       corresponding labels. This file will be used in performance
 %       evaluation.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [trdata_raw, trclass] = face_recog_knn_train(subject_range, dct_coef)
-% FACE_RECOG_KNN_TRAIN Prepares training data for kNN classifier.
-% subject_range: Vector of subject IDs to include in the training.
-% dct_coef: Number of DCT coefficients for the feature vectors.
-% Example usage:
-% [trdata_raw, trclass] = face_recog_knn_train([1 40], 70);
 
-% Set the base directory for the image files
-image_dir = 'C:\Users\laure\Dropbox\School\BSE\Coursework\23 Fall\SignalsAndSystems\Labs\final project\Signals_Final_Project\att_faces\';  % actual images directory path
+function  [trdata_raw,trclass]=face_recog_knn_train(subject_range,dct_coef)
 
-% Initialize training data and class labels
-trdata_raw = []; 
-trclass = []; 
+% Assign the vector f_range to the range of subject specified by
+% subject_range
+f_range=subject_range(1):subject_range(2); 
 
-% Initialize error log
-error_log = {};
+% Check if subject_range(1) = f_range(1) = 1
+if (f_range(1) ~= 1)
+  error('The first subject must have a label of 1');
+end
 
-% Loop through the specified range of subjects
-for i = subject_range(1):subject_range(2)
-    face_feat = zeros(5, dct_coef);  % Initialize feature vectors for the current subject
-    
-    % Loop through the first five images for each subject
-    for j = 1:5
-        % Construct the full path to the image file
-        file_path = [image_dir 's' num2str(i) '\' num2str(j) '.pgm'];
-        
-        % Check if the image file exists
-        if exist(file_path, 'file') == 2
-            % If the file exists, extract features
-            face_feat(j,:) = findfeatures(file_path, dct_coef);
-        else
-            % If the file does not exist, log an error message
-            error_message = ['File does not exist: ' file_path];
-            disp(error_message);
-            error_log{end+1} = error_message;
-            continue;  % Skip to the next image
-        end
+% Assign the number of subjects to the length of f_range
+nsubjects = length(f_range);
+
+% Initialize trdata_raw and tr_class
+% trdata is the training data matrix
+% trclass is the vector of class labels associated with the training data
+trdata_raw=[]; 
+trclass=[]; 
+
+% Loop through the number of subjects
+for i=1:nsubjects
+
+% Loop through the first five faces in the subject folders. 
+% In this experiment, the first five faces are used for training.
+    for j=1:5
+
+% Assign the filename for processing
+        name = ['C:\Users\laure\Dropbox\School\BSE\Coursework\23 Fall\SignalsAndSystems\Labs\final project\Signals_Final_Project\att_faces\s'...
+            num2str(f_range(i)) '\' num2str(j) '.pgm'];
+
+% Run "findfeatures" which returns a DCT vector (face_feat) with the
+% length defined in dct_coef.
+        face_feat(j,:)=findfeatures(name,dct_coef); 
     end
-    
-    % Concatenate the feature vectors and class labels
-    trdata_raw = [trdata_raw; face_feat];  % Append current subject's feature vectors
-    trclass = [trclass; i * ones(5, 1)];  % Append current subject's labels
+
+% Add the five face_feat vectors to the end of trdata_raw.
+trdata_raw=[trdata_raw face_feat(1:5,:)'];
+
+% Add the corresponding label for the five face_feat vectors.
+trclass=[trclass i*ones(1,5)];
+
+% End of for i=1:nsubjects loop
 end
 
-% Optionally, save the training data and error log to a .mat file
-save('training_data_and_errors.mat', 'trdata_raw', 'trclass', 'error_log');
+% Switch the columns and rows of trdata_raw and trclass
+trdata_raw=trdata_raw';
+trclass=trclass';
 
-end
+% Save the variables (dct_coef, f_range, nsubjects, trclass, trdata_raw
+save ('raw_data.mat','dct_coef','f_range','nsubjects','trclass','trdata_raw');
+
